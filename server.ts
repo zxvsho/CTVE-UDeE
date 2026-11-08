@@ -1,4 +1,5 @@
 import express from 'express';
+import http from 'http';
 import { createServer as createViteServer } from 'vite';
 import path from 'path';
 import { GoogleGenAI } from '@google/genai';
@@ -7,6 +8,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
+const httpServer = http.createServer(app);
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
 app.use(express.json());
@@ -24,7 +26,7 @@ const ai = new GoogleGenAI({
 // API endpoint to resolve or explain differential equations with CTEV pedagogy
 app.post('/api/gemini/solve', async (req, res) => {
   try {
-    const { prompt, unit } = req.body;
+    const { prompt } = req.body;
     if (!prompt) {
       return res.status(400).json({ error: 'El enunciado es requerido' });
     }
@@ -57,14 +59,19 @@ async function startServer() {
       res.sendFile(path.resolve('dist', 'index.html'));
     });
   } else {
+    const isHmrDisabled = process.env.DISABLE_HMR === 'true';
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        hmr: isHmrDisabled ? false : { server: httpServer },
+        watch: isHmrDisabled ? null : {},
+      },
       appType: 'spa',
     });
     app.use(vite.middlewares);
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
+  httpServer.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor activo en http://0.0.0.0:${PORT}`);
   });
 }
