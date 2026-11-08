@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,27 +9,92 @@
     <meta property="og:description" content="Plataforma académica y compendio de Trabajo Final de Ecuaciones Diferenciales para la Universidad de Cartagena (CTEV). Incluye desarrollo conceptual y matemático de las Unidades 1, 2 y 3, laboratorio de simulaciones interactivas (oscilador masa-resorte, campos de pendientes), solucionador analítico paso a paso y tutor de apoyo." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google Fonts: JetBrains Mono and Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" />
+
+    <!-- Global Vite HMR & WebSocket shield for iframe environments -->
     <script>
-      // Ignore harmless Vite HMR WebSocket connection errors in iframe sandbox
-      window.addEventListener('unhandledrejection', function(event) {
-        var reason = String(event && event.reason ? (event.reason.stack || event.reason) : '');
-        if (reason.indexOf('WebSocket') !== -1 || reason.indexOf('@vite/client') !== -1 || reason.indexOf('createWebSocketModuleRunnerTransport') !== -1) {
-          event.preventDefault();
-        }
-      });
-      window.addEventListener('error', function(event) {
-        var msg = String((event && (event.message || event.filename)) || '');
-        if (msg.indexOf('WebSocket') !== -1 || msg.indexOf('@vite/client') !== -1) {
-          event.preventDefault();
-        }
-      });
+      (function() {
+        try {
+          var OrigWebSocket = window.WebSocket;
+          if (OrigWebSocket) {
+            window.WebSocket = function(url, protocols) {
+              var sUrl = String(url || '');
+              if (protocols === 'vite-hmr' || sUrl.indexOf('token=') !== -1 || sUrl.indexOf('24678') !== -1 || sUrl.indexOf('5173') !== -1) {
+                var listeners = {};
+                var fakeSocket = {
+                  readyState: 1, // OPEN
+                  send: function() {},
+                  close: function() {},
+                  addEventListener: function(event, fn) {
+                    listeners[event] = listeners[event] || [];
+                    listeners[event].push(fn);
+                  },
+                  removeEventListener: function(event, fn) {
+                    if (listeners[event]) {
+                      listeners[event] = listeners[event].filter(function(cb) { return cb !== fn; });
+                    }
+                  },
+                  dispatchEvent: function() { return false; },
+                  onopen: null,
+                  onmessage: null,
+                  onerror: null,
+                  onclose: null
+                };
+                setTimeout(function() {
+                  if (fakeSocket.onopen) fakeSocket.onopen({ type: 'open' });
+                  if (listeners['open']) {
+                    listeners['open'].forEach(function(cb) { try { cb({ type: 'open' }); } catch(e) {} });
+                  }
+                }, 10);
+                return fakeSocket;
+              }
+              return new OrigWebSocket(url, protocols);
+            };
+            window.WebSocket.prototype = OrigWebSocket.prototype;
+          }
+        } catch (e) {}
+
+        // Global interception for WebSocket and module runner rejections
+        window.addEventListener('unhandledrejection', function(event) {
+          var reason = String(event && event.reason ? (event.reason.stack || event.reason.message || event.reason) : '');
+          if (reason.indexOf('WebSocket') !== -1 || reason.indexOf('@vite/client') !== -1 || reason.indexOf('createWebSocketModuleRunnerTransport') !== -1) {
+            event.preventDefault();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+          }
+        });
+
+        window.addEventListener('error', function(event) {
+          var msg = String((event && (event.message || event.filename)) || '');
+          if (msg.indexOf('WebSocket') !== -1 || msg.indexOf('@vite/client') !== -1 || msg.indexOf('createWebSocketModuleRunnerTransport') !== -1) {
+            event.preventDefault();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+          }
+        });
+      })();
     </script>
   </head>
-  <body class="bg-stone-50 text-stone-900 antialiased selection:bg-amber-500/20 selection:text-amber-900">
-    <div id="root"></div>
+  <body class="bg-[#1d2021] text-[#ebdbb2] antialiased selection:bg-[#fabd2f]/30 selection:text-[#fbf1c7] m-0 p-0 font-mono">
+    <div id="root">
+      <!-- Fallback loader styled in Gruvbox Dark so the page is never blank -->
+      <div style="min-height: 100vh; background-color: #1d2021; color: #ebdbb2; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: monospace; padding: 20px; box-sizing: border-box;">
+        <div style="border: 2px solid #fabd2f; background: #282828; padding: 24px; border-radius: 4px; max-width: 600px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+          <div style="color: #fabd2f; font-weight: bold; font-size: 15px; margin-bottom: 12px; border-bottom: 1px solid #3c3836; padding-bottom: 8px;">
+            ratatui-lazyvim :: CTEV Universidad de Cartagena
+          </div>
+          <div style="color: #83a598; font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
+            Iniciando Entorno de Ecuaciones Diferenciales...
+          </div>
+          <div style="color: #a89984; font-size: 11px;">
+            Módulos 1, 2 y 3 · Simulador Dinámico RK4 · Informe Normas APA 7
+          </div>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
