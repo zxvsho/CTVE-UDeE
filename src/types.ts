@@ -6,7 +6,8 @@ export type TuiTab =
   | 'simulador' 
   | 'rust_code' 
   | 'informe'
-  | 'docx_export';
+  | 'docx_export'
+  | 'capturas';
 
 export type VimMode = 'NORMAL' | 'INSERT' | 'VISUAL' | 'COMMAND';
 

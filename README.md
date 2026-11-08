@@ -146,6 +146,30 @@ serde_json = "1.0"
 
 ---
 
+## 🌐 Despliegue en GitHub Pages (Página Web Pública Gratuita)
+
+Esta aplicación está **100% preparada para funcionar como página web estática pública en GitHub Pages**:
+* Se configuró `base: './'` en `vite.config.ts` para rutas relativas automáticas.
+* Se incluyó el flujo de integración continua en `.github/workflows/deploy.yml`.
+* Toda la física, el solucionador analítico, el motor RK4, KaTeX y el exportador a `.docx` se ejecutan 100% en el navegador del usuario.
+
+### Pasos para Activar tu Página en GitHub Pages:
+1. Sube tu código al repositorio de GitHub:
+   ```bash
+   git init
+   git add .
+   git commit -m "Publicar aplicación CTEV Ecuaciones Diferenciales"
+   git branch -M main
+   git remote add origin https://github.com/TU_USUARIO/TU_REPOSITORIO.git
+   git push -u origin main
+   ```
+2. En GitHub, abre tu repositorio y ve a **Settings** (Configuración) > **Pages**.
+3. En **Build and deployment > Source**, selecciona: **GitHub Actions**.
+4. ¡Listo! En 1 minuto tu aplicación estará disponible en vivo en:
+   `https://TU_USUARIO.github.io/TU_REPOSITORIO/`
+
+---
+
 ## 📄 Generador del Documento Oficial en Word (`.docx`)
 La aplicación cuenta con un módulo de exportación a Microsoft Word (`.docx`) conforme a las **Normas APA (7.ª edición)** que incluye:
 1. **Hoja de Presentación (Portada APA 7):** Datos del estudiante, docente, asignatura e institución.

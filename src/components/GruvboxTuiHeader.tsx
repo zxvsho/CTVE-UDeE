@@ -12,7 +12,9 @@ import {
   Sparkles,
   Command,
   Monitor,
-  Download
+  Download,
+  Camera,
+  Globe
 } from 'lucide-react';
 
 interface GruvboxTuiHeaderProps {
@@ -20,6 +22,7 @@ interface GruvboxTuiHeaderProps {
   onSelectTab: (tab: TuiTab) => void;
   onOpenWhichKey: () => void;
   onOpenAiTutor: () => void;
+  onOpenGitHubPages: () => void;
   scanlineActive: boolean;
   onToggleScanline: () => void;
 }
@@ -33,6 +36,7 @@ const TABS: { id: TuiTab; key: string; label: string; icon: React.ReactNode; ext
   { id: 'rust_code', key: '6', label: 'Código Rust', icon: <FileCode2 size={14} />, ext: 'rs' },
   { id: 'informe', key: '7', label: 'Informe CTEV', icon: <FileText size={14} />, ext: 'md' },
   { id: 'docx_export', key: '8', label: 'Descargar DOCX', icon: <Download size={14} />, ext: 'docx' },
+  { id: 'capturas', key: '9', label: 'Capturas TUI', icon: <Camera size={14} />, ext: 'png' },
 ];
 
 export const GruvboxTuiHeader: React.FC<GruvboxTuiHeaderProps> = ({
@@ -40,6 +44,7 @@ export const GruvboxTuiHeader: React.FC<GruvboxTuiHeaderProps> = ({
   onSelectTab,
   onOpenWhichKey,
   onOpenAiTutor,
+  onOpenGitHubPages,
   scanlineActive,
   onToggleScanline,
 }) => {
@@ -80,6 +85,15 @@ export const GruvboxTuiHeader: React.FC<GruvboxTuiHeaderProps> = ({
           >
             <Monitor size={12} />
             <span className="hidden md:inline">CRT FX</span>
+          </button>
+
+          <button
+            onClick={onOpenGitHubPages}
+            title="Ver guía para activar tu página pública en GitHub Pages"
+            className="px-2 py-0.5 rounded text-[11px] bg-[#b8bb26]/20 text-[#b8bb26] hover:bg-[#b8bb26]/30 border border-[#b8bb26]/40 flex items-center gap-1 font-semibold transition-colors"
+          >
+            <Globe size={12} />
+            <span>GitHub Pages</span>
           </button>
 
           <button

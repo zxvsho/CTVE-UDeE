@@ -144,6 +144,17 @@ export const WhichKeyModal: React.FC<WhichKeyModalProps> = ({
               </div>
               <span className="text-[#7c6f64] group-hover:text-[#fabd2f]">doc.docx</span>
             </button>
+
+            <button
+              onClick={() => { onSelectTab('capturas'); onClose(); }}
+              className="w-full text-left flex items-center justify-between py-1 px-1.5 rounded hover:bg-[#3c3836] transition-colors group"
+            >
+              <div className="flex items-center gap-2">
+                <span className="bg-[#8ec07c] text-[#282828] px-1.5 py-0.2 rounded font-bold">9</span>
+                <span className="text-[#8ec07c] font-semibold">Galería de Capturas TUI</span>
+              </div>
+              <span className="text-[#7c6f64] group-hover:text-[#8ec07c]">img.png</span>
+            </button>
           </div>
 
           {/* Acciones Rápidas */}

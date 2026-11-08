@@ -20,6 +20,7 @@ const TAB_TO_FILE: Record<TuiTab, { path: string; lines: number; col: number }> 
   rust_code: { path: 'src/main.rs', lines: 280, col: 8 },
   informe: { path: 'docs/TRABAJO_FINAL_CTEV_UdeC.md', lines: 520, col: 1 },
   docx_export: { path: 'docs/TRABAJO_FINAL_APA7.docx', lines: 650, col: 1 },
+  capturas: { path: 'assets/capturas_ratatui.png', lines: 1920, col: 1080 },
 };
 
 export const GruvboxTuiStatusline: React.FC<GruvboxTuiStatuslineProps> = ({

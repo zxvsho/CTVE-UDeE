@@ -4,6 +4,7 @@ import { GruvboxTuiHeader } from './components/GruvboxTuiHeader';
 import { GruvboxTuiStatusline } from './components/GruvboxTuiStatusline';
 import { WhichKeyModal } from './components/WhichKeyModal';
 import { AiTutorModal } from './components/AiTutorModal';
+import { GitHubPagesModal } from './components/GitHubPagesModal';
 
 import { DashboardTab } from './components/tabs/DashboardTab';
 import { Unidad1Tab } from './components/tabs/Unidad1Tab';
@@ -13,12 +14,14 @@ import { InteractiveSimulatorTab } from './components/tabs/InteractiveSimulatorT
 import { RustCodeTab } from './components/tabs/RustCodeTab';
 import { InformeAcademicTab } from './components/tabs/InformeAcademicTab';
 import { DocxViewerTab } from './components/tabs/DocxViewerTab';
+import { CapturasTab } from './components/tabs/CapturasTab';
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState<TuiTab>('dashboard');
   const [vimMode, setVimMode] = useState<VimMode>('NORMAL');
   const [whichKeyOpen, setWhichKeyOpen] = useState<boolean>(false);
   const [aiTutorOpen, setAiTutorOpen] = useState<boolean>(false);
+  const [gitHubModalOpen, setGitHubModalOpen] = useState<boolean>(false);
   const [scanlineActive, setScanlineActive] = useState<boolean>(false);
   const [commandBuffer, setCommandBuffer] = useState<string>('');
   const [notification, setNotification] = useState<string>('');
@@ -41,6 +44,7 @@ export default function App() {
         setVimMode('NORMAL');
         setWhichKeyOpen(false);
         setAiTutorOpen(false);
+        setGitHubModalOpen(false);
         setCommandBuffer('');
         return;
       }
@@ -88,6 +92,10 @@ export default function App() {
           case '8':
             setCurrentTab('docx_export');
             triggerNotification('Buffer: Generador DOCX Normas APA 7');
+            break;
+          case '9':
+            setCurrentTab('capturas');
+            triggerNotification('Buffer: Galería de Capturas del Sistema');
             break;
           case ':':
             e.preventDefault();
@@ -159,6 +167,8 @@ export default function App() {
       setCurrentTab('informe');
     } else if (cmd === '8' || cmd === 'docx' || cmd === 'word') {
       setCurrentTab('docx_export');
+    } else if (cmd === '9' || cmd === 'capturas' || cmd === 'img' || cmd === 'fotos') {
+      setCurrentTab('capturas');
     } else if (cmd === 'help') {
       setWhichKeyOpen(true);
     } else if (cmd === 'crt') {
@@ -188,6 +198,7 @@ export default function App() {
           onSelectTab={setCurrentTab}
           onOpenWhichKey={() => setWhichKeyOpen(true)}
           onOpenAiTutor={() => setAiTutorOpen(true)}
+          onOpenGitHubPages={() => setGitHubModalOpen(true)}
           scanlineActive={scanlineActive}
           onToggleScanline={() => setScanlineActive((prev) => !prev)}
         />
@@ -211,6 +222,9 @@ export default function App() {
         {currentTab === 'informe' && <InformeAcademicTab />}
         {currentTab === 'docx_export' && (
           <DocxViewerTab onNotification={triggerNotification} />
+        )}
+        {currentTab === 'capturas' && (
+          <CapturasTab onNotification={triggerNotification} />
         )}
       </main>
 
@@ -240,6 +254,11 @@ export default function App() {
       <AiTutorModal
         isOpen={aiTutorOpen}
         onClose={() => setAiTutorOpen(false)}
+      />
+
+      <GitHubPagesModal
+        isOpen={gitHubModalOpen}
+        onClose={() => setGitHubModalOpen(false)}
       />
     </div>
   );
