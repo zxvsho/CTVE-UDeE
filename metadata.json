@@ -1,0 +1,6 @@
+{
+  "name": "Ecuaciones Diferenciales - Trabajo Final CTEV UdeC",
+  "description": "Plataforma académica y compendio de Trabajo Final de Ecuaciones Diferenciales para la Universidad de Cartagena (CTEV). Incluye desarrollo conceptual y matemático de las Unidades 1, 2 y 3, laboratorio de simulaciones interactivas (oscilador masa-resorte, campos de pendientes), solucionador analítico paso a paso y tutor de apoyo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
